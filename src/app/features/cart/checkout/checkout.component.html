@@ -1,0 +1,130 @@
+<div class="checkout-container">
+  <h2>Checkout</h2>
+
+  <div class="checkout-grid">
+    <div class="shipping-form">
+      <h3>Shipping Information</h3>
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              formControlName="firstName"
+              [class.error]="checkoutForm.get('firstName')?.touched && checkoutForm.get('firstName')?.invalid"
+            >
+            <small class="error-message">{{getErrorMessage('firstName')}}</small>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              formControlName="lastName"
+              [class.error]="checkoutForm.get('lastName')?.touched && checkoutForm.get('lastName')?.invalid"
+            >
+            <small class="error-message">{{getErrorMessage('lastName')}}</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            [class.error]="checkoutForm.get('email')?.touched && checkoutForm.get('email')?.invalid"
+          >
+          <small class="error-message">{{getErrorMessage('email')}}</small>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            formControlName="address"
+            [class.error]="checkoutForm.get('address')?.touched && checkoutForm.get('address')?.invalid"
+          >
+          <small class="error-message">{{getErrorMessage('address')}}</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City</label>
+            <input
+              type="text"
+              id="city"
+              formControlName="city"
+              [class.error]="checkoutForm.get('city')?.touched && checkoutForm.get('city')?.invalid"
+            >
+            <small class="error-message">{{getErrorMessage('city')}}</small>
+          </div>
+
+          <div class="form-group">
+            <label for="state">State</label>
+            <input
+              type="text"
+              id="state"
+              formControlName="state"
+              [class.error]="checkoutForm.get('state')?.touched && checkoutForm.get('state')?.invalid"
+            >
+            <small class="error-message">{{getErrorMessage('state')}}</small>
+          </div>
+
+          <div class="form-group">
+            <label for="zipCode">ZIP Code</label>
+            <input
+              type="text"
+              id="zipCode"
+              formControlName="zipCode"
+              [class.error]="checkoutForm.get('zipCode')?.touched && checkoutForm.get('zipCode')?.invalid"
+            >
+            <small class="error-message">{{getErrorMessage('zipCode')}}</small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input
+            type="tel"
+            id="phone"
+            formControlName="phone"
+            [class.error]="checkoutForm.get('phone')?.touched && checkoutForm.get('phone')?.invalid"
+          >
+          <small class="error-message">{{getErrorMessage('phone')}}</small>
+        </div>
+
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="checkoutForm.invalid || submitting"
+        >
+          {{submitting ? 'Processing...' : 'Place Order'}}
+        </button>
+      </form>
+    </div>
+
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <ng-container *ngIf="cartItems$ | async as items">
+        <div class="items-list">
+          <div *ngFor="let item of items" class="summary-item">
+            <span class="item-name">
+              {{item.product.title}}
+              <small *ngIf="item.quantity > 1">(x{{item.quantity}})</small>
+            </span>
+            <span class="item-price">${{item.product.price * item.quantity}}</span>
+          </div>
+        </div>
+
+        <div class="total">
+          <span>Total:</span>
+          <span class="total-amount">${{total$ | async}}</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,128 @@
+<div class="container">
+  <!-- <div class="filters">
+    <form [formGroup]="filterForm" class="filter-form">
+      <input
+        type="text"
+        formControlName="title"
+        placeholder="Search products..."
+        class="search-input"
+      >
+
+      <select formControlName="category" class="category-select">
+        <option value="">All Categories</option>
+        <option *ngFor="let category of categories$ | async" [value]="category">
+          {{category.name}}
+        </option>
+      </select>
+
+      <div class="price-filters">
+        <input
+          type="number"
+          formControlName="minPrice"
+          placeholder="Min Price"
+          class="price-input"
+        >
+        <input
+          type="number"
+          formControlName="maxPrice"
+          placeholder="Max Price"
+          class="price-input"
+        >
+      </div>
+    </form>
+    <button type="button" (click)="filterForm.reset(); applyFilters()">Filter Product</button>
+    <h3>Filtered Products</h3>
+<ul>
+  <li *ngFor="let product of filteredProducts$ | async">
+    <strong>{{ product.title }}</strong> - {{ product.category.name }} - ${{ product.price }}
+  </li>
+</ul>
+
+  </div> -->
+
+ 
+  <div class="filters">
+    <form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="filter-form">
+      
+      <!-- Title Search -->
+      <input
+        type="text"
+        formControlName="title"
+        placeholder="Search products..."
+        class="search-input"
+      >
+  
+      <!-- Category Dropdown -->
+      <select formControlName="category" class="category-select">
+        <option value="">All Categories</option>
+        <option *ngFor="let category of categories$ | async" [value]="category.name">
+          {{ category.name }}
+        </option>
+      </select>
+  
+      <!-- Price Filters -->
+      <div class="price-filters">
+        <input
+          type="number"
+          formControlName="minPrice"
+          placeholder="Min Price"
+          class="price-input"
+        >
+        <input
+          type="number"
+          formControlName="maxPrice"
+          placeholder="Max Price"
+          class="price-input"
+        >
+      </div>
+  
+      <!-- Filter Button -->
+      <button type="submit">Filter Product</button>
+  
+      <!-- Reset Button -->
+      <button type="button" (click)="resetFilters()">Reset</button>
+  
+    </form>
+  
+    <!-- <h3>Filtered Products</h3> -->
+    <!-- <ul>
+      <li *ngFor="let product of filteredProducts$ | async">
+        <strong>{{ product.title }}</strong> - {{ product.category }} - ${{ product.price }}
+      
+      </li>
+    </ul> -->
+    <!-- <ul>
+      <li *ngFor="let product of filteredProducts$ | async">
+        <strong>{{ product.title }}</strong> - 
+        {{ getCategoryNames(product.category) }} - 
+        ${{ product.price }} 
+      </li>
+    </ul> -->
+    
+    
+  
+  </div>
+  
+ 
+  <div class="products-grid">
+    <div *ngFor="let product of filteredProducts" class="product-card">
+      <img [src]="product.images[0]" [alt]="product.title" class="product-image">
+      <div class="product-info">
+        <h3>{{product.title}}</h3>
+        <p class="price">${{product.price}}</p>
+        <button class="view-button" [routerLink]="['/products', product.id]">
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<div style="float: inline-end;">
+  <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+  <span> Page {{ currentPage }} </span>
+  <button (click)="onPageChange(currentPage + 1)" [disabled]="(currentPage * itemsPerPage) >= allProducts.length">Next</button>
+   <span> Showing {{ filteredProducts.length }} of {{ totalItems }} products</span>
+</div>
+
